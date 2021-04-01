@@ -1,0 +1,36 @@
+name: Build and deploy to workers.dev
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+
+      - name: Create wrangler config
+        run:
+          cp wrangler.toml.example wrangler.toml
+
+      - name: Create project config
+        uses: finnp/create-file-action@master
+        env:
+          FILE_NAME: "project_config.ts"
+          FILE_DATA: ${{ secrets.PROJECT_SETTINGS_FILE }}
+
+      - name: Install, register, build and publish
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          WRANGLER_INSTALL_PATH: ${{ env.GITHUB_WORKSPACE }}
+        run: |
+          npm install --save-dev
+          npm run deploy

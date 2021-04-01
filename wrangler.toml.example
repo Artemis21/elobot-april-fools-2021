@@ -1,0 +1,5 @@
+name = "polympics-bot"
+type = "webpack"
+account_id = "YOUR-ACCOUNT-ID-HERE"
+workers_dev = true
+webpack_config = "webpack.config.js"

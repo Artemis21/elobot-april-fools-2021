@@ -1,0 +1,7 @@
+node_modules/
+/worker/
+.cargo-ok
+package-lock.json
+dist/
+project_config.ts
+wrangler.toml
